@@ -8,7 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHZFvxIQFb9qf7tcSWMIfyHpNu2fjZ1M",
+  apiKey: "AIzaSyAHZKFvxIQFb9qf7tcSWMIfyHpNu2fjZ1M",
   authDomain: "ppsync-a0d65.firebaseapp.com",
   databaseURL: "https://ppsync-a0d65-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "ppsync-a0d65",
