@@ -24,6 +24,7 @@ const db = getDatabase(app);
 const $ = (selector) => document.querySelector(selector);
 let allowDemoEntry = false;
 let authBusy = false;
+let authInitialized = false;
 
 function showMessage(message, isError = false) {
   const el = $("#authMessage");
@@ -136,12 +137,13 @@ document.addEventListener("click", async (event) => {
 }, true);
 
 onAuthStateChanged(auth, async (user) => {
+  // Restore an existing session only on the initial page load.
+  if (authInitialized) return;
+  authInitialized = true;
   if (!user) return;
   try {
     const name = await saveUserProfile(user);
-    if ($("#loginScreen") && !$("#loginScreen").classList.contains("hidden")) {
-      enterWebsite(name);
-    }
+    if ($("#loginScreen") && !$("#loginScreen").classList.contains("hidden")) enterWebsite(name);
   } catch (error) {
     showMessage("Signed in, but your profile could not be loaded. Check the Realtime Database rules.", true);
   }
