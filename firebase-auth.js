@@ -109,7 +109,9 @@ async function signInWithGoogle() {
     const name = await saveUserProfile(credential.user);
     enterWebsite(name);
   } catch (error) {
-    showMessage(friendlyError(error), true);
+    console.error("PeerSync Google sign-in error:", error);
+    const detail = error.code || error.message || "unknown error";
+    showMessage(`${friendlyError(error)} (Details: ${detail})`, true);
   } finally {
     authBusy = false;
     $("#googleSignInBtn").disabled = false;
