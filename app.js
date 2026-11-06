@@ -27,7 +27,7 @@ window.PeerSyncCloud = {
   if (['feed','forums','moderation'].includes(currentView)) render();
  },
  publishPost(post) {
-  if (window.peerSyncPublishPost) window.peerSyncPublishPost(post);
+  if (window.peerSyncPublishPost) window.peerSyncPublishPost(post).catch((error) => { console.error("PeerSync post sync failed:", error); toast("Post saved on this device, but sharing failed. Check Firebase Database Rules."); });
  }
 };
 function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
