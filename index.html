@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PeerSync student community forum prototype">
+  <title>PeerSync — Campus Community</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <div class="login-brand"><img class="sti-logo" src="sti-cubao-logo.png" alt="STI College Cubao logo"><h1>PeerSync</h1><p>One campus. Many voices. Better together.</p></div>
+    <div class="login-card"><div class="eyebrow">STI COLLEGE CUBAO · STUDENT COMMUNITY</div><h2>Welcome to PeerSync</h2><p class="muted">A shared space to ask, discuss, and connect across year levels.</p>
+      <label for="demoName">Display name</label><input id="demoName" value="Alex Student" placeholder="Enter a display name" maxlength="32">
+      <label for="demoRole">Preview as</label><select id="demoRole"><option value="student">Student</option><option value="admin">Faculty / moderator</option></select>
+      <button id="enterBtn" class="primary-btn full">Enter demo <span>→</span></button><p class="tiny-note">Prototype only: this demo does not verify STI accounts or connect to Microsoft 365.</p>
+    </div>
+  </section>
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand-row"><img class="sti-logo small" src="sti-cubao-logo.png" alt="STI College Cubao logo"><span class="brand-name">PeerSync</span></div>
+      <div class="search-wrap"><span>⌕</span><input id="globalSearch" placeholder="Search posts, topics…" aria-label="Search"></div>
+      <div class="side-label">WORKSPACE</div>
+      <nav id="mainNav" class="nav-list">
+        <button class="nav-item active" data-view="feed"><span>⌂</span> Community feed</button>
+        <button class="nav-item" data-view="forums"><span>▤</span> Discussion forums</button>
+        <button class="nav-item" data-view="questions"><span>?</span> Questions & answers</button>
+        <button class="nav-item" data-view="groups"><span>◉</span> Group spaces</button>
+        <button class="nav-item" data-view="messages"><span>✉</span> Messages <i id="messageDot" class="nav-dot"></i></button>
+        <button class="nav-item" data-view="leaderboard"><span>♛</span> Rankings</button>
+      </nav>
+      <div class="side-label">YOUR SPACE</div><nav class="nav-list">
+        <button class="nav-item" data-view="notifications"><span>♧</span> Notifications <i id="notificationDot" class="nav-dot"></i></button>
+        <button class="nav-item" data-view="profile"><span>◯</span> My profile</button>
+        <button class="nav-item" data-view="settings"><span>⚙</span> Appearance & settings</button>
+        <button class="nav-item hidden" id="moderationNav" data-view="moderation"><span>⚑</span> Moderation desk</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="online-pill"><span></span> Campus community</div><div class="user-mini"><div class="avatar" id="sideAvatar">AS</div><div class="user-mini-info"><b id="sideName">Alex Student</b><small id="sideRole">Student · Demo</small></div><button id="logoutBtn" title="Log out" aria-label="Log out">↪</button></div></div>
+    </aside>
+    <main class="main-area"><header class="topbar"><div><div class="breadcrumb">PeerSync <span>/</span> <b id="pageCrumb">Community feed</b></div><div class="mobile-brand">PeerSync</div></div><div class="top-actions"><button class="icon-btn" id="topNotifications" title="Notifications">♧<span id="topNotificationCount" class="count-badge">2</span></button><button class="profile-chip" id="topProfile"><span class="avatar tiny" id="topAvatar">AS</span><span id="topName">Alex Student</span><span>⌄</span></button></div></header>
+      <div class="content-wrap"><div id="viewRoot"></div></div>
+      <footer>PeerSync · Student community prototype <span>Not an official STI College service</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modalRoot"></div>
+  <script src="app.js"></script>
+</body></html>
