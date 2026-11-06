@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  onAuthStateChanged, signOut, updateProfile
+  GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, updateProfile
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   getDatabase, ref, get, set, update, serverTimestamp
@@ -41,7 +41,11 @@ function friendlyError(error) {
     "auth/email-already-in-use": "An account already exists for this email. Try signing in.",
     "auth/weak-password": "Choose a password with at least 6 characters.",
     "auth/too-many-requests": "Too many attempts. Please wait a little and try again.",
-    "auth/network-request-failed": "Network error. Check your connection and try again."
+    "auth/network-request-failed": "Network error. Check your connection and try again.",
+    "auth/popup-closed-by-user": "The Google sign-in window was closed before finishing.",
+    "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
+    "auth/unauthorized-domain": "This website domain is not authorized in Firebase Authentication settings.",
+    "auth/account-exists-with-different-credential": "An account already exists with this email using another sign-in method. Sign in with that method first."
   };
   return messages[error.code] || "Unable to complete sign-in. Check your details and Firebase Authentication settings.";
 }
@@ -92,6 +96,26 @@ async function signIn() {
     $("#enterBtn").disabled = false;
   }
 }
+
+async function signInWithGoogle() {
+  if (authBusy) return;
+  authBusy = true;
+  $("#googleSignInBtn").disabled = true;
+  showMessage("Opening Google sign-in…");
+  try {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    const credential = await signInWithPopup(auth, provider);
+    const name = await saveUserProfile(credential.user);
+    enterWebsite(name);
+  } catch (error) {
+    showMessage(friendlyError(error), true);
+  } finally {
+    authBusy = false;
+    $("#googleSignInBtn").disabled = false;
+  }
+}
+
 async function createAccount() {
   if (authBusy) return;
   const name = $("#demoName").value.trim();
@@ -118,7 +142,7 @@ async function createAccount() {
 
 // Capture-phase handlers prevent the old prototype login/logout handlers from bypassing Firebase.
 document.addEventListener("click", async (event) => {
-  const target = event.target.closest("#enterBtn, #createAccountBtn, #logoutBtn");
+  const target = event.target.closest("#enterBtn, #createAccountBtn, #googleSignInBtn, #logoutBtn");
   if (!target) return;
   if (target.id === "enterBtn" && allowDemoEntry) {
     allowDemoEntry = false;
@@ -128,6 +152,7 @@ document.addEventListener("click", async (event) => {
   event.stopImmediatePropagation();
   if (target.id === "enterBtn") await signIn();
   if (target.id === "createAccountBtn") await createAccount();
+  if (target.id === "googleSignInBtn") await signInWithGoogle();
   if (target.id === "logoutBtn") {
     await signOut(auth);
     $("#app").classList.add("hidden");
