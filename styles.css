@@ -146,3 +146,20 @@ body.dark .content-wrap{background:#172636}
   .stat-card small { font-size:8px; }
   .profile-chip #topName,.profile-chip > span:last-child { display:none; }
 }
+
+
+/* Feed layout cleanup: prevent oversized yellow empty canvas */
+.content-wrap {
+  background: #f3f6fa !important;
+  min-height: calc(100vh - 120px) !important;
+  flex: 1 0 auto;
+}
+#viewRoot { width: 100%; max-width: 1440px; margin: 0 auto; }
+.page-heading { margin-bottom: 18px; }
+.layout-grid { align-items: start; }
+@media (min-width: 781px) {
+  .app-shell { width: 100%; min-height: 100vh; }
+  .sidebar { flex: 0 0 252px; }
+  .main-area { width: calc(100% - 252px); }
+  .content-wrap { padding: 22px 24px 32px; }
+}
