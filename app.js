@@ -22,12 +22,26 @@ function loadState(){try{return {...initialState(),...JSON.parse(localStorage.ge
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 window.PeerSyncCloud = {
  receivePosts(remotePosts) {
-  state.posts = remotePosts;
+  // Merge Firebase posts instead of erasing the local feed when the cloud is empty.
+  const merged = new Map();
+  for (const post of state.posts || []) merged.set(String(post.id), post);
+  for (const post of remotePosts || []) merged.set(String(post.id), post);
+  state.posts = [...merged.values()].sort((a, b) =>
+    Number(b.createdAt || b.id || 0) - Number(a.createdAt || a.id || 0)
+  );
   save();
-  if (['feed','forums','moderation'].includes(currentView)) render();
+  render();
  },
  publishPost(post) {
-  if (window.peerSyncPublishPost) window.peerSyncPublishPost(post).catch((error) => { console.error("PeerSync post sync failed:", error); toast("Post saved on this device, but sharing failed. Check Firebase Database Rules."); });
+  if (window.peerSyncUid) post.authorUid = window.peerSyncUid;
+  if (window.peerSyncPublishPost) {
+   window.peerSyncPublishPost(post).catch((error) => {
+    console.error("PeerSync post sync failed:", error);
+    toast("Post could not be shared: " + (error.code || error.message));
+   });
+  } else {
+   toast("Firebase is still connecting. Please try publishing again.");
+  }
  }
 };
 function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
