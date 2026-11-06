@@ -9,9 +9,12 @@
   <section id="loginScreen" class="login-screen">
     <div class="login-brand"><img class="sti-logo" src="sti-cubao-logo.png" alt="STI College Cubao logo"><h1>PeerSync</h1><p>One campus. Many voices. Better together.</p></div>
     <div class="login-card"><div class="eyebrow">STI COLLEGE CUBAO · STUDENT COMMUNITY</div><h2>Welcome to PeerSync</h2><p class="muted">A shared space to ask, discuss, and connect across year levels.</p>
-      <label for="demoName">Display name</label><input id="demoName" value="Alex Student" placeholder="Enter a display name" maxlength="32">
-      <label for="demoRole">Preview as</label><select id="demoRole"><option value="student">Student</option><option value="admin">Faculty / moderator</option></select>
-      <button id="enterBtn" class="primary-btn full">Enter demo <span>→</span></button><p class="tiny-note">Prototype only: this demo does not verify STI accounts or connect to Microsoft 365.</p>
+      <label for="demoName">Display name</label><input id="demoName" placeholder="Your name" maxlength="32" autocomplete="name">
+      <label for="authEmail">Email address</label><input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email" required>
+      <label for="authPassword">Password</label><input id="authPassword" type="password" placeholder="At least 6 characters" minlength="6" autocomplete="current-password" required>
+      <button id="enterBtn" class="primary-btn full">Sign in <span>→</span></button>
+      <button id="createAccountBtn" class="secondary-btn full" type="button">Create student account</button>
+      <p id="authMessage" class="tiny-note" role="status" aria-live="polite">Sign in with your PeerSync account. New users can create a student account.</p>
     </div>
   </section>
   <div id="app" class="app-shell hidden">
@@ -43,4 +46,5 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="modalRoot"></div>
   <script src="app.js"></script>
+  <script type="module" src="firebase-auth.js"></script>
 </body></html>
