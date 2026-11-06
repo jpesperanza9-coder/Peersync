@@ -55,6 +55,7 @@ async function refreshPosts() {
 
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
+  window.peerSyncUid = user ? user.uid : null;
   if (stopPostsListener) {
     stopPostsListener();
     stopPostsListener = null;
